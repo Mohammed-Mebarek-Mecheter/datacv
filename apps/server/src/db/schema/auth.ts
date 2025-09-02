@@ -1,4 +1,5 @@
-import { pgTable, text, timestamp, boolean, serial } from "drizzle-orm/pg-core";
+// apps/server/src/db/schema/auth.ts
+import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -8,6 +9,12 @@ export const user = pgTable("user", {
 	image: text("image"),
 	createdAt: timestamp("created_at").notNull(),
 	updatedAt: timestamp("updated_at").notNull(),
+
+	// Admin plugin fields
+	role: text("role").default("user"), // user role (user, admin, etc.)
+	banned: boolean("banned").default(false), // whether user is banned
+	banReason: text("ban_reason"), // reason for ban
+	banExpires: timestamp("ban_expires"), // when ban expires
 });
 
 export const session = pgTable("session", {
@@ -21,6 +28,9 @@ export const session = pgTable("session", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => user.id, { onDelete: "cascade" }),
+
+	// Admin plugin field
+	impersonatedBy: text("impersonated_by"), // ID of admin impersonating this session
 });
 
 export const account = pgTable("account", {

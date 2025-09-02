@@ -3,8 +3,25 @@
 // Runtime types generated with workerd@1.20250712.0 2025-06-15 nodejs_compat
 declare namespace Cloudflare {
 	interface Env {
-		NODE_ENV: "production";
-	}
+		NODE_ENV: "production" | "development" | string;
+        POLAR_ACCESS_TOKEN: string;
+        SERVER_ENVIRONMENT: "production" | "development" | string;
+        FACEBOOK_CLIENT_ID: string;
+        FACEBOOK_CLIENT_SECRET: string;
+        GOOGLE_CLIENT_ID: string;
+        GOOGLE_CLIENT_SECRET: string;
+        LINKEDIN_CLIENT_ID: string;
+        LINKEDIN_CLIENT_SECRET: string;
+        BETTER_AUTH_URL: string;
+        BETTER_AUTH_SECRET: string;
+        POLAR_MONTHLY_PRODUCT_ID: string;
+        POLAR_LIFETIME_PRODUCT_ID: string;
+        POLAR_WEBHOOK_SECRET: string;
+        GOOGLE_GENERATIVE_AI_API_KEY: string;
+        FROM_EMAIL: string;
+        BREVO_API_KEY: string;
+        CORS_ORIGIN: string;
+    }
 }
 interface CloudflareBindings extends Cloudflare.Env {}
 type StringifyValues<EnvType extends Record<string, unknown>> = {

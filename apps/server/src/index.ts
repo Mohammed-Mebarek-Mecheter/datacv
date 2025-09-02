@@ -1,7 +1,8 @@
-import { env } from "cloudflare:workers";
+// apps/server/src/index.ts
+import "dotenv/config";
 import { trpcServer } from "@hono/trpc-server";
 import { createContext } from "./lib/context";
-import { appRouter } from "./routers/index";
+import { appRouter } from "@/routers";
 import { auth } from "./lib/auth";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -13,7 +14,7 @@ app.use(logger());
 app.use(
 	"/*",
 	cors({
-		origin: env.CORS_ORIGIN || "",
+		origin: process.env.CORS_ORIGIN || "",
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		allowHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
