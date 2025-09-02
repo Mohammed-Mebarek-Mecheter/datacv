@@ -1,14 +1,14 @@
 ﻿// apps/server/src/routers/document-initialization.ts
 import { and, eq, inArray, sql } from "drizzle-orm"; // Import 'inArray'
 import { z } from "zod";
-import { db } from "../../db";
-import { coverLetters } from "../../db/schema/cover-letters";
-import { cvs } from "../../db/schema/cvs";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { resumes } from "../../db/schema/resumes";
-import { sampleContent } from "../../db/schema/sample-content";
-import type { ExperienceLevel } from "../../lib/data-ai";
-import { protectedProcedure, router } from "../../lib/trpc";
+import { db } from "@/db";
+import { coverLetters } from "@/db/schema/cover-letters";
+import { cvs } from "@/db/schema/cvs";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { resumes } from "@/db/schema/resumes";
+import { sampleContent } from "@/db/schema/sample-content";
+import type { ExperienceLevel } from "@/lib/data-ai";
+import { protectedProcedure, router } from "@/lib/trpc";
 
 // Validation schema
 const initializeDocumentSchema = z.object({

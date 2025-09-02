@@ -2,7 +2,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { auth } from "../lib/auth";
-import { publicProcedure, router } from "../lib/trpc";
+import { publicProcedure, router } from "@/lib/trpc";
 
 export const emailOtpRouter = router({
 	// Send verification OTP

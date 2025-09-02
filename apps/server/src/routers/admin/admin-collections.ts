@@ -4,12 +4,12 @@
 
 import { and, asc, count, eq, inArray, like, sql } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
+import { db } from "@/db";
 import {
 	templateCollectionItems,
 	templateCollections,
-} from "../../db/schema/template-collections";
-import { adminProcedure, router } from "../../lib/trpc";
+} from "@/db/schema/template-collections";
+import { adminProcedure, router } from "@/lib/trpc";
 
 const collectionSchema = z.object({
 	name: z.string().min(1),

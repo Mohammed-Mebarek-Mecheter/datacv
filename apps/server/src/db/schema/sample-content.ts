@@ -2,8 +2,8 @@
 
 import { relations } from "drizzle-orm";
 import { index, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { experienceLevelEnum } from "../../db/schema/document-templates";
-import type { DataIndustry, DataSpecialization } from "../../lib/data-ai";
+import { experienceLevelEnum } from "@/db/schema/document-templates";
+import type { DataIndustry, DataSpecialization } from "@/lib/data-ai";
 
 export const sampleContent = pgTable(
 	"sample_content",

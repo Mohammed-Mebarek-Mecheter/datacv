@@ -9,13 +9,13 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
+import { user } from "@/db/schema/auth";
 import type {
 	DataIndustry,
 	DataSpecialization,
 	DocumentsType,
 	ExperienceLevel,
-} from "../../lib/data-ai";
+} from "@/lib/data-ai";
 
 // onboarding progress tracking for MVP
 export const userOnboarding = pgTable("user_onboarding", {

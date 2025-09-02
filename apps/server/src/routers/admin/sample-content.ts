@@ -1,10 +1,10 @@
 // apps/server/src/routes/admin/sample-content.ts
 import { and, asc, count, desc, eq, inArray, like, sql } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
-import { sampleContent } from "../../db/schema/sample-content";
-import type { DataIndustry, DataSpecialization } from "../../lib/data-ai";
-import { adminProcedure, router } from "../../lib/trpc";
+import { db } from "@/db";
+import { sampleContent } from "@/db/schema/sample-content";
+import type { DataIndustry, DataSpecialization } from "@/lib/data-ai";
+import { adminProcedure, router } from "@/lib/trpc";
 
 const createSampleContentSchema = z.object({
 	contentType: z.string().min(1, "Content type is required"),

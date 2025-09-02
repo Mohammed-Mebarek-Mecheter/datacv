@@ -4,17 +4,17 @@
 
 import { and, count, desc, eq, gte, inArray, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
-import { aiInteractions } from "../../db/schema/ai-interactions";
-import { user } from "../../db/schema/auth";
-import { coverLetters } from "../../db/schema/cover-letters";
-import { cvs } from "../../db/schema/cvs";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { resumes } from "../../db/schema/resumes";
-import { templateUsage } from "../../db/schema/template-usage";
-import { templateVersions } from "../../db/schema/template-versions";
-import { userPreferences } from "../../db/schema/user";
-import { adminProcedure, router } from "../../lib/trpc";
+import { db } from "@/db";
+import { aiInteractions } from "@/db/schema/ai-interactions";
+import { user } from "@/db/schema/auth";
+import { coverLetters } from "@/db/schema/cover-letters";
+import { cvs } from "@/db/schema/cvs";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { resumes } from "@/db/schema/resumes";
+import { templateUsage } from "@/db/schema/template-usage";
+import { templateVersions } from "@/db/schema/template-versions";
+import { userPreferences } from "@/db/schema/user";
+import { adminProcedure, router } from "@/lib/trpc";
 
 export const adminAnalytics = router({
 	// ===== SYSTEM-WIDE ANALYTICS =====

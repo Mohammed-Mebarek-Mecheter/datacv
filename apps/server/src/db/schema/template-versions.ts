@@ -9,8 +9,8 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { documentTemplates } from "../../db/schema/document-templates";
+import { user } from "@/db/schema/auth";
+import { documentTemplates } from "@/db/schema/document-templates";
 
 // Template versions table for comprehensive versioning
 export const templateVersions = pgTable(

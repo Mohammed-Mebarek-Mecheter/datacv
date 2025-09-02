@@ -2,9 +2,9 @@
 import { and, asc, desc, eq, inArray, like, or, sql } from "drizzle-orm";
 // Tag management operations
 import { z } from "zod";
-import { db } from "../../db";
-import { templateTagRelations, templateTags } from "../../db/schema/template-tags";
-import { adminProcedure, router } from "../../lib/trpc";
+import { db } from "@/db";
+import { templateTagRelations, templateTags } from "@/db/schema/template-tags";
+import { adminProcedure, router } from "@/lib/trpc";
 
 const tagSchema = z.object({
 	name: z.string().min(1),

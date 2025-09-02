@@ -5,11 +5,11 @@ import { polar, checkout, portal, webhooks } from "@polar-sh/better-auth";
 import { emailOTP } from "better-auth/plugins";
 import { admin } from "better-auth/plugins";
 import { Polar } from "@polar-sh/sdk";
-import * as schema from "../db/schema/auth";
+import * as schema from "@/db/schema/auth";
 import { eq } from "drizzle-orm";
-import { userPreferences } from "../db/schema/user";
+import { userPreferences } from "@/db/schema/user";
 import { sendOTPEmail } from "../lib/email";
-import { db } from "../db";
+import { db } from "@/db";
 import { env } from "cloudflare:workers";
 
 // Initialize Polar SDK client

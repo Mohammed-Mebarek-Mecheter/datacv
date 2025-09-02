@@ -1,5 +1,5 @@
 // apps/server/src/routers/index.ts
-import { protectedProcedure, publicProcedure, router } from "../lib/trpc";
+import { protectedProcedure, publicProcedure, router } from "@/lib/trpc";
 import { userRouter } from "./user/user";
 import { documentRouter } from "./documents/document";
 import { aiRouter } from "./ai";

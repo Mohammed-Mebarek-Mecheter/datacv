@@ -1,6 +1,6 @@
 // apps/server/src/db/schema/template-collections.ts
 
-import { type InferSelectModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
 	boolean,
 	index,
@@ -10,8 +10,8 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { documentTemplates } from "../../db/schema/document-templates";
+import { user } from "@/db/schema/auth";
+import { documentTemplates } from "@/db/schema/document-templates";
 
 // Template collections/categories for better organization
 export const templateCollections = pgTable(

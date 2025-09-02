@@ -2,11 +2,11 @@
 
 import { relations } from "drizzle-orm";
 import { integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { resumes } from "../../db/schema/resumes";
-import { cvs } from "../../db/schema/cvs";
-import { coverLetters } from "../../db/schema/cover-letters";
-import type { DocumentsType } from "../../lib/data-ai";
+import { user } from "@/db/schema/auth";
+import { resumes } from "@/db/schema/resumes";
+import { cvs } from "@/db/schema/cvs";
+import { coverLetters } from "@/db/schema/cover-letters";
+import type { DocumentsType } from "@/lib/data-ai";
 
 // Simplified AI interactions table for MVP
 export const aiInteractions = pgTable("ai_interactions", {

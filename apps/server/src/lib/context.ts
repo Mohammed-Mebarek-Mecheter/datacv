@@ -2,9 +2,9 @@
 import type { Context as HonoContext } from "hono";
 import { auth } from "./auth";
 import { eq } from "drizzle-orm";
-import { db } from "../db";
-import { userOnboarding, userPreferences } from "../db/schema/user";
-import { user } from "../db/schema/auth";
+import { db } from "@/db";
+import { userOnboarding, userPreferences } from "@/db/schema/user";
+import { user } from "@/db/schema/auth";
 import { env } from "cloudflare:workers";
 
 export type CreateContextOptions = {

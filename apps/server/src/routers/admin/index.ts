@@ -1,5 +1,5 @@
 ﻿// apps/server/src/routes/admin/index.ts
-import { router } from "../../lib/trpc";
+import { router } from "@/lib/trpc";
 import { adminAnalytics } from "./admin-analytics";
 import { adminCollectionRouter } from "./admin-collections";
 import { adminTagRouter } from "./admin-tags";

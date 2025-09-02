@@ -12,20 +12,20 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { templateVersions } from "../../db/schema/template-versions";
-import { templateTagRelations, templateTags } from "../../db/schema/template-tags";
+import { user } from "@/db/schema/auth";
+import { templateVersions } from "@/db/schema/template-versions";
+import { templateTagRelations, templateTags } from "@/db/schema/template-tags";
 import {
 	templateCollectionItems,
 	templateCollections,
-} from "../../db/schema/template-collections";
-import { userTemplateCustomizations } from "../../db/schema/template-customizations";
-import { templateUsage } from "../../db/schema/template-usage";
+} from "@/db/schema/template-collections";
+import { userTemplateCustomizations } from "@/db/schema/template-customizations";
+import { templateUsage } from "@/db/schema/template-usage";
 import type {
 	DataIndustry,
 	DataSpecialization,
 	DocumentsType,
-} from "../../lib/data-ai";
+} from "@/lib/data-ai";
 
 // PostgreSQL enums for better type safety and query performance
 export const templateCategoryEnum = pgEnum("template_category", [

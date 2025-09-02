@@ -2,18 +2,18 @@
 
 import { count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
-import { coverLetters } from "../../db/schema/cover-letters";
-import { cvs } from "../../db/schema/cvs";
-import { resumes } from "../../db/schema/resumes";
-import { userOnboarding, userPreferences } from "../../db/schema/user";
+import { db } from "@/db";
+import { coverLetters } from "@/db/schema/cover-letters";
+import { cvs } from "@/db/schema/cvs";
+import { resumes } from "@/db/schema/resumes";
+import { userOnboarding, userPreferences } from "@/db/schema/user";
 import type {
 	DataIndustry,
 	DataSpecialization,
 	DocumentsType,
 	ExperienceLevel,
-} from "../../lib/data-ai";
-import { protectedProcedure, router } from "../../lib/trpc";
+} from "@/lib/data-ai";
+import { protectedProcedure, router } from "@/lib/trpc";
 
 // 🔹 Reusable helper for document counts
 async function getDocumentCounts(userId: string) {

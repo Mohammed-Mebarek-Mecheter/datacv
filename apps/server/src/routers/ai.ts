@@ -2,23 +2,23 @@
 
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../db";
+import { db } from "@/db";
 import type {
 	ContentType,
 	DocumentsType,
 	ImprovementGoal,
-} from "../lib/data-ai";
-import { dataAIService } from "../lib/data-ai";
+} from "@/lib/data-ai";
+import { dataAIService } from "@/lib/data-ai";
 import {
 	dataProfessionalProcedure,
 	extractDataProfessionalContext,
 	protectedProcedure,
 	router,
-} from "../lib/trpc";
-import {aiInteractions} from "../db/schema/ai-interactions";
-import {resumes} from "../db/schema/resumes";
-import {cvs} from "../db/schema/cvs";
-import {coverLetters} from "../db/schema/cover-letters";
+} from "@/lib/trpc";
+import {aiInteractions} from "@/db/schema/ai-interactions";
+import {resumes} from "@/db/schema/resumes";
+import {cvs} from "@/db/schema/cvs";
+import {coverLetters} from "@/db/schema/cover-letters";
 
 // Input validation schemas
 const DocumentsTypeRecommendationSchema = z.object({

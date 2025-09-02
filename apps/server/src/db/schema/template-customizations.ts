@@ -10,9 +10,9 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { templateUsage } from "../../db/schema/template-usage";
+import { user } from "@/db/schema/auth";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { templateUsage } from "@/db/schema/template-usage";
 
 // Enhanced user template customizations
 export const userTemplateCustomizations = pgTable(

@@ -9,10 +9,10 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { aiInteractions } from "../../db/schema/ai-interactions";
-import type { DataIndustry, DataSpecialization } from "../../lib/data-ai";
+import { user } from "@/db/schema/auth";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { aiInteractions } from "@/db/schema/ai-interactions";
+import type { DataIndustry, DataSpecialization } from "@/lib/data-ai";
 
 // Simplified Cover Letter table for MVP
 export const coverLetters = pgTable("cover_letters", {

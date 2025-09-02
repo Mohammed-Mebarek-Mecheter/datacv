@@ -16,17 +16,17 @@ import {
 	sql,
 } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
-import { user } from "../../db/schema/auth";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { userTemplateCustomizations } from "../../db/schema/template-customizations";
-import { templateVersions } from "../../db/schema/template-versions";
+import { db } from "@/db";
+import { user } from "@/db/schema/auth";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { userTemplateCustomizations } from "@/db/schema/template-customizations";
+import { templateVersions } from "@/db/schema/template-versions";
 import type {
 	DataIndustry,
 	DataSpecialization,
 	DocumentsType,
-} from "../../lib/data-ai";
-import { adminProcedure, router } from "../../lib/trpc";
+} from "@/lib/data-ai";
+import { adminProcedure, router } from "@/lib/trpc";
 
 // Enhanced input schemas for admin operations
 const sectionValidationSchema = z.object({

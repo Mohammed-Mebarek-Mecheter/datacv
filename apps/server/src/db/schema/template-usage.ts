@@ -11,11 +11,11 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { session } from "../../db/schema/auth";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { userTemplateCustomizations } from "../../db/schema/template-customizations";
-import type { DocumentsType } from "../../lib/data-ai";
+import { user } from "@/db/schema/auth";
+import { session } from "@/db/schema/auth";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { userTemplateCustomizations } from "@/db/schema/template-customizations";
+import type { DocumentsType } from "@/lib/data-ai";
 
 export const actionTypeEnum = pgEnum("action_type", [
 	"preview",

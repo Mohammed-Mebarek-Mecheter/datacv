@@ -4,11 +4,11 @@
 
 import { and, asc, count, desc, eq, like, or, sql } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
-import { user } from "../../db/schema/auth";
-import { resumes } from "../../db/schema/resumes";
-import { userPreferences } from "../../db/schema/user";
-import { adminProcedure, router } from "../../lib/trpc";
+import { db } from "@/db";
+import { user } from "@/db/schema/auth";
+import { resumes } from "@/db/schema/resumes";
+import { userPreferences } from "@/db/schema/user";
+import { adminProcedure, router } from "@/lib/trpc";
 
 export const adminUserRouter = router({
 	// Get users with enhanced filtering

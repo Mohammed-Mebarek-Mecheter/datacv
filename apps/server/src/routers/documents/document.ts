@@ -1,11 +1,11 @@
 ﻿// apps/server/src/routers/document.ts
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
-import { coverLetters } from "../../db/schema/cover-letters";
-import { cvs } from "../../db/schema/cvs";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { resumes } from "../../db/schema/resumes";
+import { db } from "@/db";
+import { coverLetters } from "@/db/schema/cover-letters";
+import { cvs } from "@/db/schema/cvs";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { resumes } from "@/db/schema/resumes";
 import type {
 	DataIndustry,
 	DataProjectType,
@@ -13,8 +13,8 @@ import type {
 	DataSpecialization,
 	DocumentsType,
 	ExperienceLevel,
-} from "../../lib/data-ai";
-import { protectedProcedure, router } from "../../lib/trpc";
+} from "@/lib/data-ai";
+import { protectedProcedure, router } from "@/lib/trpc";
 
 // Common input schemas
 const resumePersonalInfoSchema = z.object({

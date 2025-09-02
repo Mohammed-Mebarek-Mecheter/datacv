@@ -2,17 +2,17 @@
 
 import { and, desc, eq, like, or, sql } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "../../db";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { userTemplateCustomizations } from "../../db/schema/template-customizations";
-import { templateUsage } from "../../db/schema/template-usage";
+import { db } from "@/db";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { userTemplateCustomizations } from "@/db/schema/template-customizations";
+import { templateUsage } from "@/db/schema/template-usage";
 import type {
 	DataIndustry,
 	DataSpecialization,
 	DocumentsType,
 	ExperienceLevel,
-} from "../../lib/data-ai";
-import { protectedProcedure, publicProcedure, router } from "../../lib/trpc";
+} from "@/lib/data-ai";
+import { protectedProcedure, publicProcedure, router } from "@/lib/trpc";
 
 const customizationSchema = z.object({
 	templateId: z.string(),

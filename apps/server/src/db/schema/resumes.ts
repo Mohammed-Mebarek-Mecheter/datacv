@@ -9,16 +9,16 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../../db/schema/auth";
-import { documentTemplates } from "../../db/schema/document-templates";
-import { aiInteractions } from "../../db/schema/ai-interactions";
+import { user } from "@/db/schema/auth";
+import { documentTemplates } from "@/db/schema/document-templates";
+import { aiInteractions } from "@/db/schema/ai-interactions";
 import type {
 	DataIndustry,
 	DataProjectType,
 	DataSkillCategory,
 	DataSpecialization,
 	ExperienceLevel,
-} from "../../lib/data-ai";
+} from "@/lib/data-ai";
 
 // Simplified Resume table for MVP - focused on data professionals
 export const resumes = pgTable("resumes", {
