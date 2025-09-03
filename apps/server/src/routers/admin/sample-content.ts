@@ -11,6 +11,7 @@ import { adminProcedure, router } from "@/lib/trpc";
 //
 const createSampleContentSchema = z.object({
     contentType: z.string().min(1, "Content type is required"),
+    contentSubtype: z.string().optional(),
     content: z.any(), // JSONB content
     targetIndustry: z.array(z.string() as z.ZodType<DataIndustry>).optional(),
     targetSpecialization: z.array(z.string() as z.ZodType<DataSpecialization>).optional(),
@@ -31,6 +32,8 @@ const createSampleContentSchema = z.object({
     isApproved: z.boolean().optional(),
     tags: z.array(z.string()).default([]),
     keywords: z.array(z.string()).default([]),
+    title: z.string().optional(),
+    description: z.string().optional(),
 });
 
 const updateSampleContentSchema = createSampleContentSchema.partial();

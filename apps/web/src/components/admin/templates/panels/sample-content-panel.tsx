@@ -33,13 +33,18 @@ interface SampleContent {
     targetSpecialization?: string[];
     experienceLevel?: string;
     tags?: string[];
+    targetJobTitles?: string[];
+    targetCompanyTypes?: ("startup" | "enterprise" | "consulting" | "agency" | "non_profit" | "government")[];
+    contentQuality?: "basic" | "good" | "excellent" | "premium";
+    contentSource?: "ai_generated" | "expert_written" | "user_contributed" | "curated";
+    isActive?: boolean;
+    isApproved?: boolean;
 }
 
 // 🔹 Extracted helper to avoid duplication
 const isMatchingSection = (sectionType: string, contentType: string): boolean => {
     if (sectionType === contentType) return true;
-
-    const validTypes = ["summary", "experience", "education", "skills", "projects"];
+    const validTypes = ["summary", "experience", "education", "skills", "projects", "certifications", "achievements"];
     return validTypes.includes(contentType) && sectionType === contentType;
 };
 
@@ -74,7 +79,6 @@ export const SampleContentPanel: React.FC = () => {
             [sectionId]: [...currentSectionMappings, contentId]
         };
         form.setValue('specificSampleContentMap', updatedMappings, { shouldDirty: true });
-
         toast({
             title: "Sample content linked",
             description: "Sample content has been linked to the section.",
@@ -88,7 +92,6 @@ export const SampleContentPanel: React.FC = () => {
             [sectionId]: currentSectionMappings.filter((id: string) => id !== contentId)
         };
         form.setValue('specificSampleContentMap', updatedMappings, { shouldDirty: true });
-
         toast({
             title: "Sample content unlinked",
             description: "Sample content has been unlinked from the section.",
@@ -97,20 +100,16 @@ export const SampleContentPanel: React.FC = () => {
 
     const handleBulkLink = () => {
         if (selectedContent.length === 0) return;
-
         // Auto-link based on content type matching
         const newMappings = { ...currentMappings };
-
         selectedContent.forEach(contentId => {
             const content = Object.values(sampleContentData?.data || {})
                 .flat()
                 .find((c: any) => c.id === contentId);
-
             if (content) {
                 const matchingSection = templateSections.find((section: any) =>
                     isMatchingSection(section.type, content.contentType)
                 );
-
                 if (matchingSection) {
                     const sectionMappings = newMappings[matchingSection.id] || [];
                     if (!sectionMappings.includes(contentId)) {
@@ -119,10 +118,8 @@ export const SampleContentPanel: React.FC = () => {
                 }
             }
         });
-
         form.setValue('specificSampleContentMap', newMappings, { shouldDirty: true });
         setSelectedContent([]);
-
         toast({
             title: "Sample content linked",
             description: `${selectedContent.length} content items have been auto-linked to matching sections.`,
@@ -134,9 +131,7 @@ export const SampleContentPanel: React.FC = () => {
         const matchesSearch = !searchTerm ||
             content.contentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (typeof content.content === 'string' && content.content.toLowerCase().includes(searchTerm.toLowerCase()));
-
         const matchesType = !contentTypeFilter || content.contentType === contentTypeFilter;
-
         return matchesSearch && matchesType;
     });
 
@@ -174,7 +169,6 @@ export const SampleContentPanel: React.FC = () => {
                             <div className="text-sm text-orange-800">Content Types</div>
                         </div>
                     </div>
-
                     {templateData.targetIndustries?.length === 0 && templateData.targetSpecialization?.length === 0 && (
                         <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                             <div className="flex items-center gap-2">
@@ -206,7 +200,6 @@ export const SampleContentPanel: React.FC = () => {
                                 const linkedContent = sectionMappings.map((contentId: string) =>
                                     allSampleContent.find(c => c.id === contentId)
                                 ).filter(Boolean);
-
                                 return (
                                     <div key={section.id} className="border rounded-lg p-4">
                                         <div className="flex items-center justify-between mb-3">
@@ -220,7 +213,6 @@ export const SampleContentPanel: React.FC = () => {
                                                 {section.type}
                                             </Badge>
                                         </div>
-
                                         {linkedContent.length > 0 ? (
                                             <div className="space-y-2">
                                                 {linkedContent.map((content: any) => (
@@ -298,7 +290,6 @@ export const SampleContentPanel: React.FC = () => {
                             </SelectContent>
                         </Select>
                     </div>
-
                     <div className="max-h-96 overflow-y-auto">
                         <Table>
                             <TableHeader>
@@ -328,11 +319,9 @@ export const SampleContentPanel: React.FC = () => {
                                     const isLinked = Object.values(currentMappings).some((mappings: any) =>
                                         Array.isArray(mappings) && mappings.includes(content.id)
                                     );
-
                                     const matchingSections = templateSections.filter((section: any) =>
                                         isMatchingSection(section.type, content.contentType)
                                     );
-
                                     return (
                                         <TableRow key={content.id} className={`hover:bg-muted/50 ${isLinked ? 'bg-green-50' : ''}`}>
                                             <TableCell>
@@ -389,6 +378,11 @@ export const SampleContentPanel: React.FC = () => {
                                                             {industry}
                                                         </Badge>
                                                     ))}
+                                                    {content.contentQuality && (
+                                                        <Badge variant="outline" className="text-xs">
+                                                            {content.contentQuality}
+                                                        </Badge>
+                                                    )}
                                                 </div>
                                             </TableCell>
                                             <TableCell>
@@ -420,7 +414,6 @@ export const SampleContentPanel: React.FC = () => {
                             </TableBody>
                         </Table>
                     </div>
-
                     {filteredContent.length === 0 && (
                         <div className="text-center py-6 text-muted-foreground">
                             {searchTerm || contentTypeFilter ? (

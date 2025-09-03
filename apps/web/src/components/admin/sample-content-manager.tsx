@@ -1,7 +1,5 @@
 // apps/web/src/components/admin/sample-content-manager.tsx
-
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,13 +38,23 @@ import { trpc } from "@/utils/trpc";
 interface SampleContent {
     id: string;
     contentType: string;
+    contentSubtype?: string | null;
     content?: any;
     targetIndustry?: string[] | null;
     targetSpecialization?: string[] | null;
+    targetJobTitles?: string[] | null;
+    targetCompanyTypes?: ("startup" | "enterprise" | "consulting" | "agency" | "non_profit" | "government")[] | null;
     experienceLevel?: "entry" | "junior" | "mid" | "senior" | "lead" | "principal" | "executive" | null;
+    contentQuality?: "basic" | "good" | "excellent" | "premium" | null;
+    contentSource?: "ai_generated" | "expert_written" | "user_contributed" | "curated" | null;
+    isActive?: boolean | null;
+    isApproved?: boolean | null;
     tags: string[] | null;
+    keywords: string[] | null;
     createdAt: string;
     updatedAt: string;
+    title?: string | null;
+    description?: string | null;
 }
 
 interface SampleContentFilters {
@@ -54,7 +62,12 @@ interface SampleContentFilters {
     targetIndustry?: string;
     targetSpecialization?: string;
     experienceLevel?: "entry" | "junior" | "mid" | "senior" | "lead" | "principal" | "executive";
+    contentQuality?: "basic" | "good" | "excellent" | "premium";
+    contentSource?: "ai_generated" | "expert_written" | "user_contributed" | "curated";
+    isActive?: boolean;
+    isApproved?: boolean;
     tags?: string[];
+    keywords?: string[];
     search?: string;
     page?: number;
     limit?: number;
@@ -100,6 +113,29 @@ const SPECIALIZATIONS = [
     "product_analytics",
 ];
 
+const COMPANY_TYPES = [
+    "startup",
+    "enterprise",
+    "consulting",
+    "agency",
+    "non_profit",
+    "government"
+];
+
+const CONTENT_QUALITY = [
+    "basic",
+    "good",
+    "excellent",
+    "premium"
+];
+
+const CONTENT_SOURCE = [
+    "ai_generated",
+    "expert_written",
+    "user_contributed",
+    "curated"
+];
+
 export function SampleContentManager() {
     const [filters, setFilters] = useState<SampleContentFilters>({});
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -113,11 +149,21 @@ export function SampleContentManager() {
     // Form state for create/edit
     const [formData, setFormData] = useState({
         contentType: "",
+        contentSubtype: "",
         content: "",
         targetIndustry: [] as string[],
         targetSpecialization: [] as string[],
+        targetJobTitles: [] as string[],
+        targetCompanyTypes: [] as string[],
         experienceLevel: undefined as "entry" | "junior" | "mid" | "senior" | "lead" | "principal" | "executive" | undefined,
+        contentQuality: "good" as "basic" | "good" | "excellent" | "premium",
+        contentSource: "ai_generated" as "ai_generated" | "expert_written" | "user_contributed" | "curated",
+        isActive: true,
+        isApproved: false,
         tags: [] as string[],
+        keywords: [] as string[],
+        title: "",
+        description: "",
     });
 
     // tRPC queries and mutations
@@ -175,18 +221,27 @@ export function SampleContentManager() {
 
         createMutation.mutate({
             contentType: formData.contentType,
+            contentSubtype: formData.contentSubtype,
             content: parsedContent,
             targetIndustry: formData.targetIndustry.length > 0 ? formData.targetIndustry : undefined,
             targetSpecialization: formData.targetSpecialization.length > 0 ? formData.targetSpecialization : undefined,
+            targetJobTitles: formData.targetJobTitles.length > 0 ? formData.targetJobTitles : undefined,
+            targetCompanyTypes: formData.targetCompanyTypes.length > 0 ? formData.targetCompanyTypes as any : undefined,
             experienceLevel: formData.experienceLevel,
+            contentQuality: formData.contentQuality,
+            contentSource: formData.contentSource,
+            isActive: formData.isActive,
+            isApproved: formData.isApproved,
             tags: formData.tags.length > 0 ? formData.tags : undefined,
+            keywords: formData.keywords.length > 0 ? formData.keywords : undefined,
+            title: formData.title,
+            description: formData.description,
         });
     };
 
     // Handle edit
     const handleEdit = () => {
         if (!editingContent) return;
-
         let parsedContent;
         try {
             parsedContent = JSON.parse(formData.content);
@@ -197,11 +252,21 @@ export function SampleContentManager() {
         updateMutation.mutate({
             id: editingContent.id,
             contentType: formData.contentType,
+            contentSubtype: formData.contentSubtype,
             content: parsedContent,
             targetIndustry: formData.targetIndustry.length > 0 ? formData.targetIndustry : undefined,
             targetSpecialization: formData.targetSpecialization.length > 0 ? formData.targetSpecialization : undefined,
+            targetJobTitles: formData.targetJobTitles.length > 0 ? formData.targetJobTitles : undefined,
+            targetCompanyTypes: formData.targetCompanyTypes.length > 0 ? formData.targetCompanyTypes as any : undefined,
             experienceLevel: formData.experienceLevel,
+            contentQuality: formData.contentQuality,
+            contentSource: formData.contentSource,
+            isActive: formData.isActive,
+            isApproved: formData.isApproved,
             tags: formData.tags.length > 0 ? formData.tags : undefined,
+            keywords: formData.keywords.length > 0 ? formData.keywords : undefined,
+            title: formData.title,
+            description: formData.description,
         });
     };
 
@@ -215,11 +280,21 @@ export function SampleContentManager() {
     const resetForm = () => {
         setFormData({
             contentType: "",
+            contentSubtype: "",
             content: "",
             targetIndustry: [],
             targetSpecialization: [],
+            targetJobTitles: [],
+            targetCompanyTypes: [],
             experienceLevel: undefined,
+            contentQuality: "good",
+            contentSource: "ai_generated",
+            isActive: true,
+            isApproved: false,
             tags: [],
+            keywords: [],
+            title: "",
+            description: "",
         });
     };
 
@@ -230,13 +305,24 @@ export function SampleContentManager() {
         const contentString = raw === undefined || raw === null
             ? ""
             : (typeof raw === "string" ? raw : JSON.stringify(raw, null, 2));
+
         setFormData({
             contentType: content.contentType,
+            contentSubtype: content.contentSubtype || "",
             content: contentString,
             targetIndustry: content.targetIndustry || [],
             targetSpecialization: content.targetSpecialization || [],
+            targetJobTitles: content.targetJobTitles || [],
+            targetCompanyTypes: content.targetCompanyTypes || [],
             experienceLevel: content.experienceLevel || undefined,
+            contentQuality: content.contentQuality || "good",
+            contentSource: content.contentSource || "ai_generated",
+            isActive: content.isActive ?? true,
+            isApproved: content.isApproved ?? false,
             tags: content.tags || [],
+            keywords: content.keywords || [],
+            title: content.title || "",
+            description: content.description || "",
         });
         setIsEditDialogOpen(true);
     };
@@ -323,7 +409,6 @@ export function SampleContentManager() {
                                 </SelectContent>
                             </Select>
                         </div>
-
                         <div>
                             <Label>Industry</Label>
                             <Select
@@ -345,7 +430,6 @@ export function SampleContentManager() {
                                 </SelectContent>
                             </Select>
                         </div>
-
                         <div>
                             <Label>Specialization</Label>
                             <Select
@@ -367,7 +451,6 @@ export function SampleContentManager() {
                                 </SelectContent>
                             </Select>
                         </div>
-
                         <div>
                             <Label>Experience Level</Label>
                             <Select
@@ -394,7 +477,6 @@ export function SampleContentManager() {
                                 </SelectContent>
                             </Select>
                         </div>
-
                         <div>
                             <Label>Search</Label>
                             <Input
@@ -437,6 +519,11 @@ export function SampleContentManager() {
                                                 <Badge variant="outline">
                                                     {content.contentType.replace("_", " ").toUpperCase()}
                                                 </Badge>
+                                                {content.contentSubtype && (
+                                                    <Badge variant="secondary" className="ml-1 text-xs">
+                                                        {content.contentSubtype}
+                                                    </Badge>
+                                                )}
                                             </TableCell>
                                             <TableCell className="max-w-xs">
                                                 <div className="truncate">
@@ -457,6 +544,11 @@ export function SampleContentManager() {
                                                             {industry}
                                                         </Badge>
                                                     ))}
+                                                    {content.contentQuality && (
+                                                        <Badge variant="outline" className="text-xs">
+                                                            {content.contentQuality}
+                                                        </Badge>
+                                                    )}
                                                 </div>
                                             </TableCell>
                                             <TableCell>
@@ -578,23 +670,51 @@ function SampleContentForm({
 }) {
     return (
         <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <Label>Content Type *</Label>
+                    <Select
+                        value={formData.contentType}
+                        onValueChange={(value: string) => setFormData({ ...formData, contentType: value })}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select content type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {contentTypes.map((type) => (
+                                <SelectItem key={type} value={type}>
+                                    {type.replace("_", " ").toUpperCase()}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div>
+                    <Label>Content Subtype</Label>
+                    <Input
+                        placeholder="More granular content type"
+                        value={formData.contentSubtype}
+                        onChange={(e) => setFormData({ ...formData, contentSubtype: e.target.value })}
+                    />
+                </div>
+            </div>
+
             <div>
-                <Label>Content Type *</Label>
-                <Select
-                    value={formData.contentType}
-                    onValueChange={(value: string) => setFormData({ ...formData, contentType: value })}
-                >
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select content type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {contentTypes.map((type) => (
-                            <SelectItem key={type} value={type}>
-                                {type.replace("_", " ").toUpperCase()}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                <Label>Title</Label>
+                <Input
+                    placeholder="Human-readable title"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                />
+            </div>
+
+            <div>
+                <Label>Description</Label>
+                <Textarea
+                    placeholder="What this content demonstrates"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
             </div>
 
             <div>
@@ -621,7 +741,6 @@ function SampleContentForm({
                         }
                     />
                 </div>
-
                 <div>
                     <Label>Target Specializations</Label>
                     <Input
@@ -637,45 +756,160 @@ function SampleContentForm({
                 </div>
             </div>
 
-            <div>
-                <Label>Experience Level</Label>
-                <Select
-                    value={formData.experienceLevel || ""}
-                    onValueChange={(value: string) =>
-                        setFormData({
-                            ...formData,
-                            experienceLevel: value as "entry" | "junior" | "mid" | "senior" | "lead" | "principal" | "executive" | undefined
-                        })
-                    }
-                >
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select experience level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="entry">Entry</SelectItem>
-                        <SelectItem value="junior">Junior</SelectItem>
-                        <SelectItem value="mid">Mid</SelectItem>
-                        <SelectItem value="senior">Senior</SelectItem>
-                        <SelectItem value="lead">Lead</SelectItem>
-                        <SelectItem value="principal">Principal</SelectItem>
-                        <SelectItem value="executive">Executive</SelectItem>
-                    </SelectContent>
-                </Select>
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <Label>Target Job Titles</Label>
+                    <Input
+                        placeholder="Comma-separated job titles"
+                        value={formData.targetJobTitles.join(", ")}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                targetJobTitles: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
+                            })
+                        }
+                    />
+                </div>
+                <div>
+                    <Label>Target Company Types</Label>
+                    <Input
+                        placeholder="Comma-separated company types"
+                        value={formData.targetCompanyTypes.join(", ")}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                targetCompanyTypes: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
+                            })
+                        }
+                    />
+                </div>
             </div>
 
-            <div>
-                <Label>Tags</Label>
-                <Input
-                    placeholder="Comma-separated tags"
-                    value={formData.tags.join(", ")}
-                    onChange={(e) =>
-                        setFormData({
-                            ...formData,
-                            tags: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
-                        })
-                    }
-                />
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <Label>Experience Level</Label>
+                    <Select
+                        value={formData.experienceLevel || ""}
+                        onValueChange={(value: string) =>
+                            setFormData({
+                                ...formData,
+                                experienceLevel: value as "entry" | "junior" | "mid" | "senior" | "lead" | "principal" | "executive" | undefined
+                            })
+                        }
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select experience level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="none">None</SelectItem>
+                            <SelectItem value="entry">Entry</SelectItem>
+                            <SelectItem value="junior">Junior</SelectItem>
+                            <SelectItem value="mid">Mid</SelectItem>
+                            <SelectItem value="senior">Senior</SelectItem>
+                            <SelectItem value="lead">Lead</SelectItem>
+                            <SelectItem value="principal">Principal</SelectItem>
+                            <SelectItem value="executive">Executive</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div>
+                    <Label>Content Quality</Label>
+                    <Select
+                        value={formData.contentQuality}
+                        onValueChange={(value: string) =>
+                            setFormData({
+                                ...formData,
+                                contentQuality: value as "basic" | "good" | "excellent" | "premium"
+                            })
+                        }
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select quality" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {CONTENT_QUALITY.map((quality) => (
+                                <SelectItem key={quality} value={quality}>
+                                    {quality.charAt(0).toUpperCase() + quality.slice(1)}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <Label>Content Source</Label>
+                    <Select
+                        value={formData.contentSource}
+                        onValueChange={(value: string) =>
+                            setFormData({
+                                ...formData,
+                                contentSource: value as "ai_generated" | "expert_written" | "user_contributed" | "curated"
+                            })
+                        }
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select source" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {CONTENT_SOURCE.map((source) => (
+                                <SelectItem key={source} value={source}>
+                                    {source.replace("_", " ").replace(/\b\w/g, l => l.toUpperCase())}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="flex items-center gap-4 pt-6">
+                    <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={formData.isActive}
+                            onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                            className="rounded"
+                        />
+                        <span>Active</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={formData.isApproved}
+                            onChange={(e) => setFormData({ ...formData, isApproved: e.target.checked })}
+                            className="rounded"
+                        />
+                        <span>Approved</span>
+                    </label>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <Label>Tags</Label>
+                    <Input
+                        placeholder="Comma-separated tags"
+                        value={formData.tags.join(", ")}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                tags: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
+                            })
+                        }
+                    />
+                </div>
+                <div>
+                    <Label>Keywords</Label>
+                    <Input
+                        placeholder="Comma-separated keywords"
+                        value={formData.keywords.join(", ")}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                keywords: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
+                            })
+                        }
+                    />
+                </div>
             </div>
         </div>
     );
