@@ -3,7 +3,7 @@ import { router } from "@/lib/trpc";
 import { adminAnalytics } from "./admin-analytics";
 import { adminCollectionRouter } from "./admin-collections";
 import { adminTagRouter } from "./admin-tags";
-import { adminTemplateRouter } from "./admin-templates";
+import { adminTemplateRouter } from "./templates/index";
 import { adminUserRouter } from "./admin-users";
 import { adminSampleContentRouter } from "./sample-content";
 

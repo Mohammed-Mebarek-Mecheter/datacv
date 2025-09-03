@@ -118,7 +118,7 @@ const customizationSchema = z.object({
 	isShared: z.boolean().default(false),
 });
 
-export const templateRouter = router({
+export const userfacingtemplateRouter = router({
 	// ===== PUBLIC TEMPLATE DISCOVERY =====
 
 	// Browse templates (available to all users)
